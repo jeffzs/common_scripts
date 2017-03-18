@@ -2,6 +2,8 @@
 # AUTHOR: Zhifei Sun, zhifei.sun@duke.edu
 # PURPOSE: Repository for custom functions used in every project
 
+# test
+
 # GLOBAL CONSTANTS ---------------------------------------------------
 list.of.packages <- c("devtools","MatchIt", "rms" ,"Hmisc","ggplot2","gridExtra","lubridate","dplyr","tidyr",
                       "stringr","gmodels","data.table","extrafont", "maps","bit64")
