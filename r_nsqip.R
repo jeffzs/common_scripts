@@ -1,13 +1,5 @@
 # NSQIP Data Manipulation
 
-# NSQIP.DATA.2012 <- fread(paste(DIR.DB,"db_NSQIP/ACS_NSQIP_PUF12.txt",sep=""))
-# NSQIP.DATA.2013 <- fread(paste(DIR.DB,"db_NSQIP/ACS_NSQIP_PUF13.txt",sep=""))
-
-
-
-# global:
-DIR.DB <- "/users/zhifeisun/dropbox/Jeff/Work - Active/[Analysis]/databases/"
-
 
 #decode peds nsqip
 Peds_NSQIP_Decode <- function(db) {
