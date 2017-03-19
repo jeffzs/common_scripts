@@ -190,20 +190,27 @@ decode_hcup_kid <- function(db) {
   
   db$AGE_IN_DAYS <- NA  
   db$AGE_IN_DAYS <- as.numeric(paste(db$AGEDAY))
+  label(db$AGE_IN_DAYS) <- "Age, d"
+  
   
   db$AGE_IN_MONTHS <- NA     # only available when age is < 11 yo
   db$AGE_IN_MONTHS <- as.numeric(paste(db$AGEMONTH))
+  label(db$AGE_IN_MONTHS) <- "Age, m"
   
   db$SEX_L <- NA
   db$SEX_L[db$FEMALE == 0] <- "1@Male"
   db$SEX_L[db$FEMALE == 1] <- "2@Female"
   db$SEX_L <- factor(db$SEX_L)
+  label(db$SEX_L) <- "Sex"
+  
   
   db$RACE_L <- NA
   db$RACE_L[db$RACE == 1] <- "1@White"
   db$RACE_L[db$RACE == 2] <- "2@Black"
   db$RACE_L[db$RACE %in% c(3,4,5,6)] <- "3@Other"
   db$RACE_L <- factor(db$RACE_L)
+  label(db$RACE_L) <- "Race"
+  
   
   db$APRDRG_RISK_MORTALITY_L <- NA
   db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 0] <- "1@None"
@@ -221,6 +228,7 @@ decode_hcup_kid <- function(db) {
   db$MEDIAN_INCOME_L[db$ZIPINC_QRTL == 3] <- "3@51-75th percentile"
   db$MEDIAN_INCOME_L[db$ZIPINC_QRTL == 4] <- "4@76-100th percentile"
   db$MEDIAN_INCOME_L <- factor(db$MEDIAN_INCOME_L)
+  label(db$MEDIAN_INCOME_L) <- "Median Income"
   
   db$INSURANCE_L <- NA 
   db$INSURANCE_L[db$PAY1 %in% c(4,5)] <- "1@None"
@@ -228,18 +236,22 @@ decode_hcup_kid <- function(db) {
   db$INSURANCE_L[db$PAY1 %in% c(1,2)] <- "3@Government"
   db$INSURANCE_L[db$PAY1 %in% c(6)] <- "4@Other"
   db$INSURANCE_L <- factor(db$INSURANCE_L)
+  label(db$INSURANCE_L) <- "Insurance Status"
   
   db$LOS_L <- as.numeric(paste(db$LOS))
+  label(db$LOS_L) <- "Hospital Length of Stay, d"
   
   db$INHOSPITAL_MORT_L <- NA
   db$INHOSPITAL_MORT_L[db$DIED == 0] <- "1@Did not die"
   db$INHOSPITAL_MORT_L[db$DIED == 1] <- "2@Died"
   db$INHOSPITAL_MORT_L <- factor(db$INHOSPITAL_MORT_L )
+  label(db$INHOSPITAL_MORT_L) <- "Mortality During Index Admission"
   
   db$NACHTYPE_L <- NA 
   db$NACHTYPE_L[db$NACHTYPE %in% c(0,3)] <- "1@Non-Children's Hospital"
   db$NACHTYPE_L[db$NACHTYPE %in% c(1,2)] <- "2@Children's Hospital"
   db$NACHTYPE_L <- factor(db$NACHTYPE_L)
+  label(db$NACHTYPE_L) <- "Children's Hospital Designation"
   
   db$HOSP_REGION_L <- NA 
   db$HOSP_REGION_L[db$HOSP_REGION == 1] <- "1@Northeast"
@@ -247,11 +259,13 @@ decode_hcup_kid <- function(db) {
   db$HOSP_REGION_L[db$HOSP_REGION == 3] <- "3@South"
   db$HOSP_REGION_L[db$HOSP_REGION == 4] <- "4@West"
   db$HOSP_REGION_L <- factor(db$HOSP_REGION_L)
+  label(db$HOSP_REGION_L) <- "Hospital Region"
   
   db$HOSP_TEACH_L <- NA 
   db$HOSP_TEACH_L[db$HOSP_TEACH == 0] <- "1@Non-Teaching"
   db$HOSP_TEACH_L[db$HOSP_TEACH == 1] <- "2@Teaching"
   db$HOSP_TEACH_L <- factor(db$HOSP_TEACH_L)
+  label(db$HOSP_TEACH_L) <- "Hospital Teaching Status"
   
   return(db)
 }
