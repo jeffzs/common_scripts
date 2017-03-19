@@ -996,7 +996,7 @@ ggForestPlot <- function(d.raw, xlab="Odds Ratio", ylab="Factors",
          scale_x_continuous(breaks=x.tick, limits=c(0,x.max)) +         # tick markers at breaks
          scale_y_discrete(label=rev(d$x))        # labelling      
 
-  p <- p + theme_jeff_nyt() + 
+  p <- p + theme_classic() + 
            theme(axis.ticks.y = element_blank(), axis.text.y = element_text(size = 12, face="bold", hjust = 1, vjust=0.5), legend.position = "none") +
            theme(axis.text.x=element_text(size=12)) +
            theme(axis.line.x = element_line(color="black")) +
