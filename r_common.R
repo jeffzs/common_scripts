@@ -4,7 +4,7 @@
 
 # required packages 
 list.of.packages <- c("devtools","MatchIt", "rms" ,"Hmisc","ggplot2","gridExtra","lubridate","dplyr","tidyr",
-                      "stringr","gmodels","data.table","extrafont", "maps","bit64")
+                      "stringr","gmodels","data.table","extrafont", "maps","bit64","rdrop2")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 # devtools::install_github('rstudio/DT')
@@ -12,6 +12,7 @@ if(length(new.packages)) install.packages(new.packages)
 # devtools::install_github("rstudio/addinexamples", type = "source")
 # LIBRARIES
 library(MatchIt)                    # propensity matching
+library(rdrop2)
 library(survival)                   # survival analysis
 library(rms)                        # restricted cubic spline
 library(Hmisc)                      # summary tables
