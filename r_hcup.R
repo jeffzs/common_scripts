@@ -213,11 +213,11 @@ decode_hcup_kid <- function(db) {
   
   
   db$APRDRG_RISK_MORTALITY_L <- NA
-  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 0] <- "1@None"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 0] <- "0@None"
   db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 1] <- "1@Minor"
-  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 2] <- "1@Moderate"
-  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 3] <- "1@Major"
-  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 4] <- "1@Extreme"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 2] <- "2@Moderate"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 3] <- "3@Major"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 4] <- "4@Extreme"
   db$APRDRG_RISK_MORTALITY_L <- factor(db$APRDRG_RISK_MORTALITY_L)
   label(db$APRDRG_RISK_MORTALITY_L) <- "APRDRG Mortality RIsk"
   
