@@ -182,7 +182,76 @@ decode_hcup_sid <- function(a) {
   label(g$TOTCHG_2016) <- "Index Admission Charges (2016 USD)"
   label(g$TOTCHG_SUM_2016) <- "Cumulative Admission Charges (2016 USD)"
   label(g$RACE_L) <- "Race"
+
+}
+
+# KID: kids inpatient database
+decode_hcup_kid <- function(db) {
+  
+  db$AGE_IN_DAYS <- NA  
+  db$AGE_IN_DAYS <- as.numeric(paste(db$AGEDAY))
+  
+  db$AGE_IN_MONTHS <- NA     # only available when age is < 11 yo
+  db$AGE_IN_MONTHS <- as.numeric(paste(db$AGEMONTH))
+  
+  db$SEX_L <- NA
+  db$SEX_L[db$FEMALE == 0] <- "1@Male"
+  db$SEX_L[db$FEMALE == 1] <- "2@Female"
+  db$SEX_L <- factor(db$SEX_L)
+  
+  db$RACE_L <- NA
+  db$RACE_L[db$RACE == 1] <- "1@White"
+  db$RACE_L[db$RACE == 2] <- "2@Black"
+  db$RACE_L[db$RACE %in% c(3,4,5,6)] <- "3@Other"
+  db$RACE_L <- factor(db$RACE_L)
+  
+  db$APRDRG_RISK_MORTALITY_L <- NA
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 0] <- "1@None"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 1] <- "1@Minor"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 2] <- "1@Moderate"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 3] <- "1@Major"
+  db$APRDRG_RISK_MORTALITY_L[db$APRDRG_Risk_Mortality == 4] <- "1@Extreme"
+  db$APRDRG_RISK_MORTALITY_L <- factor(db$APRDRG_RISK_MORTALITY_L)
+  label(db$APRDRG_RISK_MORTALITY_L) <- "APRDRG Mortality RIsk"
   
   
+  db$MEDIAN_INCOME_L <- NA
+  db$MEDIAN_INCOME_L[db$ZIPINC_QRTL == 1] <- "1@0-25th percentile"
+  db$MEDIAN_INCOME_L[db$ZIPINC_QRTL == 2] <- "2@26-50th percentile"
+  db$MEDIAN_INCOME_L[db$ZIPINC_QRTL == 3] <- "3@51-75th percentile"
+  db$MEDIAN_INCOME_L[db$ZIPINC_QRTL == 4] <- "4@76-100th percentile"
+  db$MEDIAN_INCOME_L <- factor(db$MEDIAN_INCOME_L)
   
+  db$INSURANCE_L <- NA 
+  db$INSURANCE_L[db$PAY1 %in% c(4,5)] <- "1@None"
+  db$INSURANCE_L[db$PAY1 %in% c(3)] <- "2@Private"
+  db$INSURANCE_L[db$PAY1 %in% c(1,2)] <- "3@Government"
+  db$INSURANCE_L[db$PAY1 %in% c(6)] <- "4@Other"
+  db$INSURANCE_L <- factor(db$INSURANCE_L)
+  
+  db$LOS_L <- as.numeric(paste(db$LOS))
+  
+  db$INHOSPITAL_MORT_L <- NA
+  db$INHOSPITAL_MORT_L[db$DIED == 0] <- "1@Did not die"
+  db$INHOSPITAL_MORT_L[db$DIED == 1] <- "2@Died"
+  db$INHOSPITAL_MORT_L <- factor(db$INHOSPITAL_MORT_L )
+  
+  db$NACHTYPE_L <- NA 
+  db$NACHTYPE_L[db$NACHTYPE %in% c(0,3)] <- "1@Non-Children's Hospital"
+  db$NACHTYPE_L[db$NACHTYPE %in% c(1,2)] <- "2@Children's Hospital"
+  db$NACHTYPE_L <- factor(db$NACHTYPE_L)
+  
+  db$HOSP_REGION_L <- NA 
+  db$HOSP_REGION_L[db$HOSP_REGION == 1] <- "1@Northeast"
+  db$HOSP_REGION_L[db$HOSP_REGION == 2] <- "2@Midwest"
+  db$HOSP_REGION_L[db$HOSP_REGION == 3] <- "3@South"
+  db$HOSP_REGION_L[db$HOSP_REGION == 4] <- "4@West"
+  db$HOSP_REGION_L <- factor(db$HOSP_REGION_L)
+  
+  db$HOSP_TEACH_L <- NA 
+  db$HOSP_TEACH_L[db$HOSP_TEACH == 0] <- "1@Non-Teaching"
+  db$HOSP_TEACH_L[db$HOSP_TEACH == 1] <- "2@Teaching"
+  db$HOSP_TEACH_L <- factor(db$HOSP_TEACH_L)
+  
+  return(db)
 }
