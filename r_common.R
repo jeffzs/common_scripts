@@ -214,7 +214,7 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
                       linetype.manual = c("solid","dashed","dotted","dotdash","twodash","longdash","twodash"), line.size = 0.4, line.color,
                       save = FALSE, file.name = "Figure.pdf", file.height = 8, file.width = 9, font.family ="Helvetica",
                       color = FALSE,
-                      km.relative.height = 20) {
+                      km.relative.height = 4) {
   # Create ggplot-based KM table w/ numbers at risk at the bottom
   # 
   # Args:
