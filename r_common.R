@@ -4,7 +4,7 @@
 
 # required packages 
 list.of.packages <- c("devtools","MatchIt", "rms" ,"Hmisc","ggplot2","gridExtra","lubridate","dplyr","tidyr",
-                      "stringr","gmodels","data.table","extrafont", "maps","bit64","rdrop2")
+                      "stringr","gmodels","data.table","extrafont", "maps","bit64","rdrop2","cowplot")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 # devtools::install_github('rstudio/DT')
