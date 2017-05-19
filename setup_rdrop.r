@@ -4,7 +4,11 @@
 # install
 install.packages('rdrop2')
 library(rdrop2)
+
 token <- readRDS("~/credentials/droptoken.rds") # downloaded from local machine
+
+# on local machine:
+drop_auth()
 
 # usage
 drop_dir <- "/Jeff/work - active/"

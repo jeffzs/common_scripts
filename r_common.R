@@ -211,9 +211,10 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
                       xlim = -1, timeby = 12, 
                       main = "", 
                       pval = TRUE, pval_xloc=0.6, pval_yloc=0.1 , 
-                      linetype.manual = c("solid","dashed","dotted","dotdash","twodash","longdash"), line.size = 0.4, line.color,
-                      save = FALSE, file.name = "Figure.pdf", file.height = 6, file.width = 7, font.family ="Franklin Gothic Book",
-                      color = FALSE) {
+                      linetype.manual = c("solid","dashed","dotted","dotdash","twodash","longdash","twodash"), line.size = 0.4, line.color,
+                      save = FALSE, file.name = "Figure.pdf", file.height = 8, file.width = 9, font.family ="Helvetica",
+                      color = FALSE,
+                      km.relative.height = 20) {
   # Create ggplot-based KM table w/ numbers at risk at the bottom
   # 
   # Args:
@@ -236,13 +237,14 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
   library("gridExtra")
   library("gtable")
   library("grid")
+  library("scales")
+  library("cowplot")
   
   surv <- NULL
   n.risk <- NULL
-  if(is.null(ystratalabs)) {
-    ystratalabs <- as.character(levels(summary(sfit)$strata))
-  }
+  if(is.null(ystratalabs)) ystratalabs <- as.character(levels(summary(sfit)$strata))
   m <- max(nchar(ystratalabs))
+  
   if(is.null(ystrataname)) ystrataname <- ""
   
   if (xlim == -1){
@@ -250,6 +252,7 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
   } else {
     times <- seq(0, xlim, by = timeby)
   }
+  
   .df <- data.frame(time = sfit$time, n.risk = sfit$n.risk,
                     n.event = sfit$n.event, surv = sfit$surv, strata = summary(sfit, censored = T)$strata,
                     upper = sfit$upper, lower = sfit$lower)
@@ -261,48 +264,46 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
   
   if (color==FALSE)
   {
-  p <- ggplot(.df, aes(time, surv, group = strata)) +
-    
-    # Plot Lines
-    geom_step(aes(linetype = strata), size = line.size) +  # line size
-    scale_linetype_manual(values=linetype.manual)+         # line type
-    
-    # Axis and Grid
-    theme_bw() +
-    
-    theme(axis.title.x = element_text(vjust = 0.5,face="bold",size=14, family=font.family)) +
-    theme(axis.text.x  = element_text(colour="black",size=10, family =font.family)) +
-    theme(axis.title.y = element_text(face="bold",size=14, family=font.family)) +
-    theme(axis.text.y  = element_text(colour="black",size=10, family = font.family)) +
-    #theme(axis.line = element_line(colour = "black",size = 1)) +
-    theme(axis.line.x = element_line(color="black")) +
-    theme(axis.line.y = element_line(color="black")) +
-    
-    scale_x_continuous(xlabs, breaks = times, limits = c(0, max(times))) +  #max(sfit$time)
-    scale_y_continuous(ylabs, limits = c(0, 1)) +
-    theme(panel.grid.major = element_blank()) +
-    theme(panel.grid.minor = element_blank()) +
-    theme(panel.border = element_blank()) +
-    #theme(panel.border = element_rect(colour = "black")) +
-    theme(panel.background = element_blank()) +
-    
-    # Legend
-    theme(legend.justification = c(0,0), legend.background = element_rect(fill = "transparent",colour = NA), 
-          legend.position = c(0,0), legend.background = element_blank()) +
-    theme(legend.title = element_text(colour="black",face="bold",size=12, family = font.family))+
-    theme(legend.text = element_text(colour="black",face="bold",size=12, family = font.family)) +
-    labs(linetype = ystrataname, name=ystrataname, colour=ystrataname) +   
-    
-    # Margin ( m = max char length of strata)
-    #theme(plot.margin = unit(c(0, 1, 1, ifelse(m < 10, 1.5, 5)), "lines")) +
-    theme(plot.margin = unit(c(0, 1, 1, ifelse(m < 10, 2.5, 5)), "lines")) +
-    
-    # Title
-    ggtitle(main) 
+    p <- ggplot(.df, aes(time, surv, group = strata)) +
+      
+      # Plot Lines
+      geom_step(aes(linetype = strata), size = line.size) +  # line size
+      scale_linetype_manual(values=linetype.manual)+         # line type
+      
+      # Axis and Grid
+      theme_classic() +
+      
+      theme(axis.title.x = element_text(vjust = 0.5,face="bold",size=14, family=font.family)) +
+      theme(axis.text.x  = element_text(colour="black",size=10, family =font.family)) +
+      theme(axis.title.y = element_text(face="bold",size=14, family=font.family)) +
+      theme(axis.text.y  = element_text(colour="black",size=10, family = font.family)) +
+      theme(axis.line.x = element_line(color="black")) +
+      theme(axis.line.y = element_line(color="black")) +
+      
+      scale_x_continuous(xlabs, breaks = times, limits = c(0, max(times))) +  #max(sfit$time)
+      scale_y_continuous(ylabs, limits = c(0, 1)) +
+      theme(panel.grid.major = element_blank()) +
+      theme(panel.grid.minor = element_blank()) +
+      theme(panel.border = element_blank()) +
+      theme(panel.background = element_blank()) +
+      
+      # Legend
+      theme(legend.justification = c(0,0), legend.position = c(0,0), 
+            legend.background = element_rect(fill = "transparent",colour = NA)) +
+      theme(legend.title = element_text(colour="black",face="bold",size=12, family = font.family))+
+      theme(legend.text = element_text(colour="black",face="bold",size=12, family = font.family)) +
+      labs(linetype = ystrataname, name=ystrataname, colour=ystrataname) +   
+      
+      # Margin ( m = max char length of strata)
+      #theme(plot.margin = unit(c(0, 1, 1, ifelse(m < 10, 1.5, 5)), "lines")) +
+      theme(plot.margin = unit(c(0, 1, 1, ifelse(m < 10, 2.5, 5)), "lines")) +
+      
+      # Title
+      ggtitle(main) 
   }
   else {  # color == TRUE
     p <- ggplot(.df, aes(time, surv, group = strata)) +
-    
+      
       # Plot Lines
       geom_step(aes(color=strata), size = line.size) +  # line size and color
       scale_linetype_manual(values=linetype.manual)+         # line type
@@ -337,16 +338,15 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
       # Title
       ggtitle(main) 
   }
-
+  
   if(pval) {
     sdiff <- survdiff(eval(sfit$call$formula), data = eval(sfit$call$data))
     pval <- pchisq(sdiff$chisq, length(sdiff$n)-1, lower.tail = FALSE)
     pvaltxt <- ifelse(pval < 0.001, "p < 0.001", paste("p =", round(pval, digits=3)))
     p <- p + 
       # P-value Text
-      annotate("text", 
-          x = max(times), y = 0, hjust = 1,       #right justified
-          label = pvaltxt, family = font.family)
+      annotate("text", x = max(times), y = 0, hjust = 1,       #right justified
+               label = pvaltxt, family = font.family)
   }
   
   ## Create a blank plot for place-holding
@@ -367,56 +367,30 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
       n.risk = summary(sfit, times = times, extend = TRUE)$n.risk)
     
     risk.data$strata <- factor(risk.data$strata, levels=rev(levels(risk.data$strata)))
-  
+    
     data.table <- ggplot(risk.data, aes(x = time, y = strata, label = format(n.risk, nsmall = 0))) +
-      geom_text(size = 3, family = font.family, hjust=0.7) +
+      geom_text(size = 4, family = font.family, hjust=0.7) +
       
-      theme_bw() +
       scale_y_discrete(breaks = as.character(levels(risk.data$strata)), labels = rev(ystratalabs)) +
-      # scale_y_discrete(#format1ter = abbreviate,  # breaks = 1:3,    # labels = ystratalabs) +
       scale_x_continuous("Numbers At Risk", limits = c(0, max(times))) +
-
-      theme(panel.grid.minor = element_blank(), 
+      theme_bw() +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
             panel.border = element_blank(),
-            panel.grid.major = element_blank(), 
-            
-            axis.text.x = element_blank(), 
-            axis.ticks = element_blank(),
-      # Numbers at risk table themes      
-            axis.title.x = element_text(size = 14, vjust = 1, family = font.family), 
-            axis.text.y = element_text(size = 12, face = "bold", hjust = 1,family = font.family))
-    
-    data.table <- data.table + theme(legend.position = "none") +  xlab(NULL) + ylab(NULL)
+            axis.text.x = element_blank(),
+            axis.title.x = element_text(size = 14, vjust = 1, family = font.family)
+      )+
+      
+      data.table <- data.table + theme(legend.position = "none") +  xlab(NULL) + ylab(NULL)
     data.table <- data.table + theme(plot.margin = unit(c(1, 1, 0.1, ifelse(m < 10, 2.5, 5)), "lines"))
-      #theme(plot.margin = unit(c(-2, 1, 0.1, ifelse(m < 10, 2.5, 7)-0.19 * m), "lines"))
     
-    grid.newpage()
-    #plot_grid(p, data.table, align = 'v', rel_widths = c(7, 1))
-    
-    #Extract Grobs
-    g1 <- ggplotGrob(p)
-    g2 <- ggplotGrob(data.table)
-    #Bind the tables
-    g <- gtable:::rbind_gtable(g1, g2, "first")
-    #Remove a row between the plots
-    g <- gtable_add_rows(g, unit(-1,"cm"), pos=nrow(g1))
-    # relative heights
-    panels <- g$layout$t[grep("panel", g$layout$name)]
-    g$heights[panels[1]] <- unit(7, 'null')
-    g$heights[panels[2]] <- unit(1, 'null')
-    
-
-    # clipping
-    g$layout$clip[g$layout$name == "panel"] <- "off"
-    #draw
-    grid.newpage()
-    grid.draw(g)
+    g <- plot_grid(p, data.table, ncol = 1, rel_heights = c(km.relative.height, 1),align = 'v')
+    print(g)
     
     if (save) {
       print("Saving Figure & Summary Table")
       if (last(unlist(strsplit(file.name, "[.]"))) %in% c("pdf","PDF")) {
         dev.copy(pdf,file = file.name, width = file.width, height = file.height); dev.off()
-        embed_fonts(file.name)  # embed true type fonts
       }
       else if (last(unlist(strsplit(file.name, "[.]"))) %in% c("png","PNG")) {
         dev.copy(png,file ==file.name,width=file.width,height=file.height,units="in",res=300); dev.off()
@@ -426,12 +400,10 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
       sink()
     }
     if (returns) {
-#       a <- arrangeGrob(p, blank.pic, data.table, clip = FALSE, nrow = 3, ncol = 1, heights = unit(c(2, .1, .25),c("null", "null", "null")))
       return(g)
     }
   } #end if risktable
   else {   # if no risktable
-    # draw figure
     print(p)
     # save figure
     if (save == TRUE) {
@@ -452,6 +424,7 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
     if(returns) return(p)
   }
 }
+
 
 
 meandiffplot <- function (x) {
