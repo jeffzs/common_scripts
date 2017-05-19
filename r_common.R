@@ -326,8 +326,10 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
       theme(panel.background = element_blank()) +
       
       # Legend
-      theme(legend.justification = c(0,0), legend.background = element_rect(fill = "transparent",colour = NA), 
-            legend.position = c(0,0), legend.background = element_blank()) +
+      theme(legend.justification = c("left","bottom"), 
+            legend.background = element_rect(fill = "transparent",colour = NA) 
+            #legend.position = c(0,0), 
+      ) +
       theme(legend.title = element_text(colour="black",face="bold",size=12, family = font.family))+
       theme(legend.text = element_text(colour="black",face="bold",size=12, family = font.family)) +
       labs(linetype = ystrataname, name=ystrataname, colour=ystrataname) +   
@@ -379,9 +381,9 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
             panel.border = element_blank(),
             axis.text.x = element_blank(),
             axis.title.x = element_text(size = 14, vjust = 1, family = font.family)
-      )+
-      
-      data.table <- data.table + theme(legend.position = "none") +  xlab(NULL) + ylab(NULL)
+      )
+    
+    data.table <- data.table + theme(legend.position = "none") +  xlab(NULL) + ylab(NULL)
     data.table <- data.table + theme(plot.margin = unit(c(1, 1, 0.1, ifelse(m < 10, 2.5, 5)), "lines"))
     
     g <- plot_grid(p, data.table, ncol = 1, rel_heights = c(km.relative.height, 1),align = 'v')
@@ -424,6 +426,7 @@ ggkmTable <- function(sfit, risktable=TRUE,returns = T,
     if(returns) return(p)
   }
 }
+
 
 
 
