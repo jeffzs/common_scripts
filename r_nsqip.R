@@ -196,7 +196,7 @@ NSQIPDecodeData <- function(DB, Colectomy.Targeted = F) {
   # RECOMMEND USE THIS FUNCTION AFTER SUBSET TO INCREASE SPEED #
   
   DB$AGE_L <- NA
-  DB$AGE_L <- as.numeric(DB$AGE)
+  DB$AGE_L <- as.numeric(as.character(DB$AGE))
   DB$AGE_L [DB$AGE == "90+"] <- 90
   label(DB$AGE_L) <- "Age (years)"
   
