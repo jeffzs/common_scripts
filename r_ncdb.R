@@ -70,6 +70,8 @@ DecodeNCDBDataset <- function (NCDB_raw) {
   #   Data frame with additional decoded variables 
   NCDB_decoded <- NCDB_raw 
   
+  colnames(NCDB_decoded) <- toupper(colnames(NCDB_decoded))
+  
   label(NCDB_decoded$AGE) <- "Age (years)"
   NCDB_decoded$AGE[NCDB_decoded$AGE==999] <- NA
   
